@@ -53,4 +53,22 @@ public class DataContext : DbContext
     cartItem.Product = Products.Find(cartItem.ProductId);
     return cartItem;
   }
+
+  public Product UpdateItem(ItemUpdateJSON itemUpdateJSON)
+  {
+    int productId = itemUpdateJSON.id;
+    // check for duplicate cart item
+    Product update = Products.FirstOrDefault(p => p.ProductId == productId);
+    if (update == null){
+      return null;
+    }
+    // ItemUpdate update = new ItemUpdate();
+    update.ProductName = itemUpdateJSON.name;
+    update.UnitPrice = itemUpdateJSON.price;
+    update.UnitsInStock = itemUpdateJSON.stock;
+    update.UnitsOnOrder = itemUpdateJSON.onorder;
+    update.ReorderLevel = itemUpdateJSON.reorder;
+    SaveChanges();
+    return update;
+  }
 }

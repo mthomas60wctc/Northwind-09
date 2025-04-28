@@ -27,11 +27,13 @@ namespace Northwind.Controllers
         // adds a row to the cartitem table
         public CartItem Post([FromBody] CartItemJSON cartItem) => _dataContext.AddToCart(cartItem);
         [HttpGet, Route("api/category")]
+        //
         // returns all categories
         public IEnumerable<Category> GetCategory() => _dataContext.Categories.Include("Products").OrderBy(c => c.CategoryName);
         [HttpGet, Route("api/inventory")]
         public IEnumerable<Product> GetInventory() => _dataContext.Products.OrderBy(p => p.Discontinued == false).OrderBy(p => p.ProductId);
         [HttpPost, Route("api/updateinventoryitem")]
-        public IEnumerable<Product> UpdateInventoryItem() => _dataContext.Products.OrderBy(p => p.Discontinued == false).OrderBy(p => p.ProductId);
+        public Product Update([FromBody] ItemUpdateJSON itemUpdate) => _dataContext.UpdateItem(itemUpdate);
+
     }
 }

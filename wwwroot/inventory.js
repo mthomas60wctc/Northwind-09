@@ -52,15 +52,37 @@ async function fetchProducts() {
 document.getElementById('product_rows').addEventListener("click", (e) => {
     p = e.target.parentElement;
     if (p.classList.contains('product')) {
-        console.log(p.dataset['name'])
         e.preventDefault()
-        console.log(p.dataset['id']);
         document.getElementById('ProductId').innerHTML = p.dataset['id'];
         document.getElementById('ProductName').value = p.dataset['name'];
         document.getElementById('UnitPrice').value = Number(p.dataset['price']).toFixed(2);
         document.getElementById('ReorderLevel').value = Number(p.dataset['reorder']);
         document.getElementById('OnOrder').value = Number(p.dataset['onorder']);
         document.getElementById('InStock').value = Number(p.dataset['stock']);
-        const cart = new bootstrap.Modal('#cartModal', {}).show();
+        const modal = new bootstrap.Modal('#cartModal', {}).show();
     }
+    console.log(document.getElementById('confirmUpdate'));
 });
+
+document.getElementById('confirmUpdate').addEventListener("click", (e) => {
+    console.log('clicked');
+    // hide modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('cartModal')).hide();
+    // use axios post to add item to cart
+    item = {
+        "id": Number(document.getElementById('ProductId').innerHTML),
+        "name": document.getElementById('User').dataset['name'],
+        "price": Number(document.getElementById('price').value),
+        "reorder": Number(document.getElementById('reorder').value),
+        "onorder": Number(document.getElementById('onorder').value),
+        "stock": Number(document.getElementById('stock').value),
+    }
+    updateInveontory(item);
+});
+
+async function updateInveontory(item) {
+    axios.post('../../api/updateinventoryitem', item).then(res => {
+        // toast("Product Added", `${res.data.product.productName} successfully added to cart.`);
+        console.log("done did it")
+    });
+}
