@@ -52,7 +52,7 @@
                         <ul class="dropdown-menu">
                             @if (User?.Identity?.IsAuthenticated ?? false)
                             {
-                                if (User.IsInRole("northwind-customer"))
+                                if (User.IsInRole("northwind-customer") || User.IsInRole("northwind-employee"))
                                 {
                                     <li><a class="dropdown-item" asp-controller="Customer" asp-action="Account"><i
                                                 class="bi bi-person"></i> Account</a></li>
@@ -69,27 +69,24 @@
                             }
                         </ul>
                     </li>
-                    @if (User?.Identity?.IsAuthenticated ?? false)
+                    @if ((User?.Identity?.IsAuthenticated ?? false) && User.IsInRole("northwind-employee"))
                     {
-                        if (User.IsInRole("northwind-customer"))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <i class="bi bi-people">
-                                    </i> Employees
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" asp-controller="Inventory" asp-action="Index">
-                                            <i class="bi bi-person">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="bi bi-people">
+                                </i> Employees
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Inventory" asp-action="Index">
+                                        <i class="bi bi-person">
 
-                                            </i> Inventory
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
+                                        </i> Inventory
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     }
                 </ul>
                 @if (User?.Identity?.IsAuthenticated ?? false)

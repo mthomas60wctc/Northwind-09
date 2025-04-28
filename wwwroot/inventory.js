@@ -61,28 +61,28 @@ document.getElementById('product_rows').addEventListener("click", (e) => {
         document.getElementById('InStock').value = Number(p.dataset['stock']);
         const modal = new bootstrap.Modal('#cartModal', {}).show();
     }
-    console.log(document.getElementById('confirmUpdate'));
 });
 
 document.getElementById('confirmUpdate').addEventListener("click", (e) => {
-    console.log('clicked');
     // hide modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('cartModal')).hide();
     // use axios post to add item to cart
     item = {
         "id": Number(document.getElementById('ProductId').innerHTML),
-        "name": document.getElementById('User').dataset['name'],
-        "price": Number(document.getElementById('price').value),
-        "reorder": Number(document.getElementById('reorder').value),
-        "onorder": Number(document.getElementById('onorder').value),
-        "stock": Number(document.getElementById('stock').value),
+        "name": document.getElementById('ProductName').value,
+        "price": Number(document.getElementById('UnitPrice').value),
+        "reorder": Number(document.getElementById('ReorderLevel').value),
+        "onorder": Number(document.getElementById('OnOrder').value),
+        "stock": Number(document.getElementById('InStock').value),
     }
     updateInveontory(item);
 });
 
 async function updateInveontory(item) {
+    // console.log(item);
     axios.post('../../api/updateinventoryitem', item).then(res => {
         // toast("Product Added", `${res.data.product.productName} successfully added to cart.`);
-        console.log("done did it")
+        console.log("done did it");
+        fetchProducts();
     });
 }
