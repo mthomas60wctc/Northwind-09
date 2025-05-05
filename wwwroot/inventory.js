@@ -63,6 +63,12 @@ document.getElementById('product_rows').addEventListener("click", (e) => {
     }
 });
 
+const toast = (header, message) => {
+    document.getElementById('toast_header').innerHTML = header;
+    document.getElementById('toast_body').innerHTML = message;
+    bootstrap.Toast.getOrCreateInstance(document.getElementById('liveToast')).show();
+}
+
 document.getElementById('confirmUpdate').addEventListener("click", (e) => {
     // hide modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('cartModal')).hide();
@@ -81,8 +87,7 @@ document.getElementById('confirmUpdate').addEventListener("click", (e) => {
 async function updateInveontory(item) {
     // console.log(item);
     axios.post('../../api/updateinventoryitem', item).then(res => {
-        // toast("Product Added", `${res.data.product.productName} successfully added to cart.`);
-        console.log("done did it");
+        toast("Product Updated", `${item.name} successfully updated.`);
         fetchProducts();
     });
 }
